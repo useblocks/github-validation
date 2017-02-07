@@ -5,6 +5,12 @@ from groundwork.util import gw_get
 
 
 class GwDbValidatorsPattern(GwSqlPattern, GwValidatorsPattern):
+    """
+    Allows the validation of database model requests.
+
+    Builds automatically hashes of table rows/model instances and validates these hashes, if a request
+    is made on these rows.
+    """
     def __init__(self, app, **kwargs):
         super(GwDbValidatorsPattern, self).__init__(app, **kwargs)
         self.app = app
@@ -14,11 +20,23 @@ class GwDbValidatorsPattern(GwSqlPattern, GwValidatorsPattern):
 
 
 class DbValidatorsPlugin:
+    """
+    Cares about database validators on plugin level
+    """
     def __init__(self, plugin):
         self.plugin = plugin
         self.app = plugin.app
 
     def register(self, name, description, db_class):
+        """
+        Registers a new database model and starts its validation.
+
+        :param name: Unique name
+        :param description: Meaningful description
+        :param db_class: sqlalchemy based database model
+
+        :return: Instance of DbValidator
+        """
         return self.app.validators.db.register(name, description, db_class, self.plugin)
 
     def unregister(self, name):
@@ -29,6 +47,9 @@ class DbValidatorsPlugin:
 
 
 class DbValidatorsApplication:
+    """
+        Cares about database validators on application level
+        """
     def __init__(self, app):
         self.app = app
         self._db_validators = {}
@@ -47,6 +68,16 @@ class DbValidatorsApplication:
         self.db.create_all()
 
     def register(self, name, description, db_class, plugin):
+        """
+                Registers a new database model and starts its validation.
+
+                :param name: Unique name
+                :param description: Meaningful description
+                :param db_class: sqlalchemy based database model
+                :param plugin: Plugin, which registers the DbValidator
+
+                :return: Instance of DbValidator
+                """
         if name in self._db_validators.keys():
             raise KeyError("Database validator %s already registered" % name)
 
@@ -70,7 +101,20 @@ class DbValidatorsApplication:
 
 
 class DbValidator:
+    """
+    Class for storing a database validator.
+    For each registered database validator an instance of this class gets created and configured.
+    """
     def __init__(self, name, description, db_class, db, hash_model, plugin=None):
+        """
+
+        :param name: Unique name
+        :param description: Meaningful description
+        :param db_class: Database model
+        :param db: Database
+        :param hash_model: Database model, which is used to store the hashes
+        :param plugin: Plugin, which has registered the DbValidator
+        """
         self.name = name
         self.description = description
         self.db = db
@@ -119,4 +163,7 @@ class DbValidator:
 
 
 class ValidationError(BaseException):
+    """
+    Exception, which is thrown if a validation fails.
+    """
     pass

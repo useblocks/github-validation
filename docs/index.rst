@@ -70,7 +70,7 @@ In most cases validation may be overengineered, if you are developing a small sc
 However there are scenarios and domains, which need a proven validation of data, so that your application is allowed and
 verified to be used inside this domains.
 
-For instance if your are developing solutions for the automotive industry and your solutions may affect the software,
+For instance if you are developing solutions for the automotive industry and your solutions may affect the software,
 which runs on the electronic control units (ECUs) of a car, your application must be
 `ISO 26262 <https://en.wikipedia.org/wiki/ISO_26262>`_ compliant. And this normally needs a proven validation
 of in- and output data (beside a lot of other stuff).
@@ -97,10 +97,10 @@ Content
 -------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-   patterns/index
    plugins/index
+   patterns/index
    api
 
 

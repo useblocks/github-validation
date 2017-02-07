@@ -1,6 +1,19 @@
 API
 ===
 
+Plugins
+-------
+
+GwDbValidator
+~~~~~~~~~~~~~
+.. automodule::  groundwork_validation.plugins.gw_db_validator.gw_db_validator
+.. currentmodule:: groundwork_validation.plugins.gw_db_validator.gw_db_validator
+
+.. autoclass:: GwDbValidator
+   :members:
+   :inherited-members:
+   :undoc-members:
+
 Patterns
 --------
 

@@ -6,10 +6,14 @@ from groundwork.util import gw_get
 
 
 class GwValidatorsPattern(GwBasePattern):
+    """
+    Allows the creation of hashes for python objects (and its validation).
+    """
 
     def __init__(self, app, **kwargs):
         super(GwValidatorsPattern, self).__init__(app, **kwargs)
         self.app = app
+
         self.validators = ValidatorsPlugin(self)
         if not hasattr(self.app, "validators"):
             self.app.validators = ValidatorsApplication(self)

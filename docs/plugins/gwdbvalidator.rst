@@ -13,8 +13,8 @@ of :class:`~groundwork_validation.patterns.gw_validators_pattern.gw_validators_p
 It also registers a receiver to get notified, if a new database models is registered.
 If this is the case, it also registers a new validator for this new model.
 
-Using
------
+Activation and Usage
+--------------------
 All you have to do is to activate the plugin, which is done by adding its name to your application configuration::
 
     LOAD_PLUGINS = ["MyDbPlugin", "MyOtherPlugin", "GwDbValidator"]
