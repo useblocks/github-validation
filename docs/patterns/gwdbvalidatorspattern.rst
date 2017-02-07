@@ -5,9 +5,9 @@ GwDbValidatorsPattern
 
 This patterns provides functions to automatically hash and validate data requests on SQLAlchemy models.
 
-This may be needed to validate that data handling of used libraries and services works correct.
+It is used to prove that data handling of used libraries and services works correct.
 The below image shows the flow of data which is stored to a database and requested back.
-As you can see at least 3 libraries/services are used to work with your data.
+As you can see at least 3 libraries/services are used, which behavior and source code is not under your full control.
 
 .. image:: /_static/db_hash_workflow.png
    :scale: 50%
@@ -21,9 +21,6 @@ And every time a request is made on a registered database model (e.g by model.qu
 
 Hashes are stored inside a database (via groundwork-database) and based on its configuration, an external
 database may be used so that hashes are still available and valid after application restarts.
-
-
-
 
 Register a new database validator
 ---------------------------------
