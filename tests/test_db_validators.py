@@ -3,7 +3,7 @@ from sqlalchemy import Column, String, Integer
 
 import groundwork
 from groundwork_validation.patterns import GwDbValidatorsPattern
-from groundwork_validation.patterns.gw_db_validators_pattern.gw_db_validators import ValidationError
+from groundwork_validation.patterns.gw_db_validators_pattern.gw_db_validators_pattern import ValidationError
 
 
 def test_db_validator_init():

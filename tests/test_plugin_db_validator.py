@@ -4,7 +4,7 @@ from sqlalchemy import Column, String, Integer
 import groundwork
 from groundwork_validation.plugins import GwDbValidator
 from groundwork_database.patterns import GwSqlPattern
-from groundwork_validation.patterns.gw_db_validators_pattern.gw_db_validators import ValidationError
+from groundwork_validation.patterns.gw_db_validators_pattern.gw_db_validators_pattern import ValidationError
 
 
 def test_plugin_init():

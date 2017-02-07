@@ -16,30 +16,67 @@ class GwValidatorsPattern(GwBasePattern):
 
 
 class ValidatorsPlugin:
+    """
+    Cares about the Validator handling on plugin level.
+    """
 
     def __init__(self, plugin):
         self.plugin = plugin
         self.app = plugin.app
 
-    def register(self, name, description, algorithm=hashlib.sha256, attributes=None):
+    def register(self, name, description, algorithm=None, attributes=None):
+        """
+        Registers a new validator on plugin level.
+
+        :param name: Unique name of the validator
+        :param description: Helpful description of the validator
+        :param algorithm: A hashlib compliant function. If None, hashlib.sha256 is taken.
+        :param attributes: List of attributes, for which the hash must be created. If None, all contained
+                           attributes are used.
+        :return: Validator instance
+        """
+        if algorithm is None:
+            algorithm = hashlib.sha256
         return self.app.validators.register(name, description, self.plugin, algorithm=algorithm, attributes=attributes)
 
     def unregister(self, name):
         self.app.validators.unregister(name)
 
     def get(self, name):
+        """
+        Returns a single or a list of validator instance, which were registered by the current plugin.
+
+        :param name: Name of the validator. If None, all validators of the current plugin are returned.
+        :return: Single or list of Validator instances
+        """
         self.app.validators.get(name, self.plugin)
 
 
 class ValidatorsApplication:
-
+    """
+    Cares about the Validator handling on application level.
+    """
     def __init__(self, app):
         self.app = app
         self._validators = {}
 
-    def register(self, name, description, plugin, algorithm=hashlib.sha256, attributes=None):
+    def register(self, name, description, plugin, algorithm=None, attributes=None):
+        """
+        Registers a new validator on application level.
+
+        :param name: Unique name of the validator
+        :param description: Helpful description of the validator
+        :param algorithm: A hashlib compliant function. If None, hashlib.sha256 is taken.
+        :param attributes: List of attributes, for which the hash must be created. If None, all contained
+                           attributes are used.
+        :param plugin: Plugin instance, for which the validator gets registered.
+        :return: Validator instance
+        """
         if name in self._validators.keys():
             raise KeyError("Validator %s already registered" % name)
+
+        if algorithm is None:
+            algorithm = hashlib.sha256
 
         self._validators[name] = Validator(name, description,
                                            algorithm=algorithm,
@@ -55,24 +92,55 @@ class ValidatorsApplication:
             raise KeyError("Validator %s does not exist" % name)
 
     def get(self, name, plugin):
+        """
+        Returns a single or a list of validator instance
+
+        :param name: Name of the validator. If None, all validators are returned.
+        :param plugin: Plugin instance, which has registered the requested validator.
+                       If None, all validators are returned.
+        :return: Single or list of Validator instances
+        """
         gw_get(self._validators, name, plugin)
 
 
 class Validator:
-
-    def __init__(self, name, description, algorithm=hashlib.sha256, attributes=None, plugin=None):
+    """
+    Represent the final validator, which provides functions to hash a given python object and to validate a
+    python object against a given hash.
+    """
+    def __init__(self, name, description, algorithm=None, attributes=None, plugin=None):
         self.name = name
         self.description = description
         self.plugin = plugin
+        if algorithm is None:
+            algorithm = hashlib.sha256
         self.algorithm = algorithm
         self.attributes = attributes
 
     def validate(self, data, hash_string):
+        """
+        Validates a python object against a given hash
+
+        :param data: Python object
+        :param hash_string: hash as string, which must be compliant to the configured hash algorithm of
+                            the used validator.
+        :return: True, if object got validated by hash. Else False
+        """
         if self.hash(data) == hash_string:
             return True
         return False
 
     def hash(self, data, return_hash_object=False, strict=False):
+        """
+        Generates a hash of a given Python object.
+
+        :param data: Python object
+        :param return_hash_object: If true, the complete hashlib object is returned
+                                   instead of a hexdigest representation as string.
+        :param strict: If True, all configured attributes **must** exist in the given data, otherwise an exception
+                       is thrown.
+        :return: hash as string
+        """
         current_hash = self.algorithm()
         if self.attributes is None:
             current_hash.update(pickle.dumps(data))

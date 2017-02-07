@@ -1,2 +1,2 @@
 from groundwork_validation.patterns.gw_validators_pattern.gw_validators_pattern import GwValidatorsPattern
-from groundwork_validation.patterns.gw_db_validators_pattern.gw_db_validators import GwDbValidatorsPattern
+from groundwork_validation.patterns.gw_db_validators_pattern.gw_db_validators_pattern import GwDbValidatorsPattern

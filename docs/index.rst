@@ -38,21 +38,60 @@ All of its plugins and patterns are focused on application validation during run
 
 This package contains the following groundwork extensions:
 
- * Plugins
+**Plugins**
 
-  * **GwDbValidator** - Validates automatically each database model request
+* :ref:`gwdbvalidator` - Validates automatically all database model requests.
 
- * Patterns
+**Patterns**
 
-   * **GwValidatorsPattern** - Provides functions to hash and valid python objects.
-   * **GwDbValidatorsPattern** - Allows the registration of specific database model classes, so that their requests get validated.
+* :ref:`gwvalidators` - Provides functions to hash and validate python objects.
+* :ref:`gwdbvalidators` - Allows the registration of database model classes to validate retrieved data on each
+  request.
+
+
+Why validation is needed
+------------------------
+Validation is mostly needed, if your application needs input data and must be sure that this data is valid and not
+somehow corrupted.
+
+A common case is the usage of files, which must be copied from an external source.
+During the transport over the network, the data may get corrupted.
+To be sure that this is not the case, a hash of this file can be build and stored beside the file.
+After the file is downloaded, the hash is rebuild and compared to the stored one.
+
+Another use case is the usage of databases. If your application is the only one which is allowed to store and change
+specific data inside a database, you should be able to validate these data before your plugin is using it again
+(This use case is supported by :ref:`gwdbvalidators` and :ref:`gwdbvalidator`).
+
+Who requests validation?
+------------------------
+In most cases validation may be overengineered, if you are developing a small script for yourself.
+
+However there are scenarios and domains, which need a proven validation of data, so that your application is allowed and
+verified to be used inside this domains.
+
+For instance if your are developing solutions for the automotive industry and your solutions may affect the software,
+which runs on the electronic control units (ECUs) of a car, your application must be
+`ISO 26262 <https://en.wikipedia.org/wiki/ISO_26262>`_ compliant. And this normally needs a proven validation
+of in- and output data (beside a lot of other stuff).
 
 Installation
 ------------
-
+Via pip
+~~~~~~~
 To install ``groundwork-validation`` simply use ``pip``::
 
    pip install groundwork-validation
+
+
+From sources
+~~~~~~~~~~~~
+Using git and pip::
+
+    git clone https://github.com/useblocks/groundwork-validation
+    cd groundwork-validation
+    pip install -e .
+
 
 Content
 -------
@@ -62,4 +101,7 @@ Content
 
    patterns/index
    plugins/index
+   api
+
+
 
