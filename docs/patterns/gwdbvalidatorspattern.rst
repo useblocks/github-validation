@@ -105,4 +105,67 @@ executing SQL statements directly::
             # Reloads the data from db and will throw an exception
             self.db.session.refresh(my_test)
 
+Configuration
+-------------
+
+``GwDbValidatorsPattern`` stores the hashes in its own database.
+Like other databases in groundwork, the used database connection string can be configured inside the application
+configuration file by setting **HASH_DB**::
+
+   HASH_DB = "sqlite://%s/hash_db" % APP_PATH
+
+The format of the connection string is documented inside the
+`SQLAlchemy documentation <http://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls>`_.
+
+If no connection string is configured, **"sqlite://"** is used as default value.
+
+Technical background
+--------------------
+To provide a reliable validation, the
+:class:`~groundwork_validation.patterns.gw_db_validators_pattern.gw_db_validators_pattern.GwDbValidatorsPattern`
+hooks into the
+`event system of SQLAlchemy <http://docs.sqlalchemy.org/en/latest/core/event.html>`_
+to get notified about each important action and run own validation tasks.
+
+To store its own hashes, ``GwDbValidatorsPattern`` is using its own database, which is registered and
+available in groundwork under the name **hash_db**.
+
+For each database model, ``GwDbValidatorsPattern`` registers a validator with the help of
+:class:`~groundwork_validation.patterns.gw_validators_pattern.gw_validators_pattern.GwValidatorsPattern`.
+As attributes only the table columns are taking into account.
+So no additional attributes like SQLALchemy internal ones or model functions are used.
+
+Storing data
+~~~~~~~~~~~~
+``GwDbValidatorsPattern`` has registered its own hash creation function for the SQLAlchemy events **after_update** and
+**after_insert**.
+
+If one of these events is triggered, ``GwDbValidatorsPattern`` gets the model instance and creates with the help of
+:class:`~groundwork_validation.patterns.gw_validators_pattern.gw_validators_pattern.GwValidatorsPattern` a new
+hash.
+
+This hash gets stored together with an ID into the hash database. The ID must be unique and our function must
+be able to regenerate it based on given and static information.
+So the ID contains: validator name, database table name and model instance id.
+Example: *my_validator.user_table.5*.
+This kind of an ID allows us to store hashes for all database models into one single database table.
+
+Receiving data
+~~~~~~~~~~~~~~
+``GwDbValidatorsPattern`` has registered its own hash validation function for the SQLAlchemy event
+**refresh**.
+
+If this gets called, ``GwDbValidatorsPattern`` retrieves the received database model instance.
+For this it regenerates the hash ID and requests the stored hash value.
+With the configured validator of the
+:class:`~groundwork_validation.patterns.gw_validators_pattern.gw_validators_pattern.GwValidatorsPattern` it validates
+the stored hash against the retrieved database model instance.
+
+If the validation fails, the exception
+:class:`~groundwork_validation.patterns.gw_db_validators_pattern.gw_db_validators_pattern.ValidationError`
+gets raised. If this happens, the plugin developer is responsible to handle this exception the correct way.
+
+
+
+
 
