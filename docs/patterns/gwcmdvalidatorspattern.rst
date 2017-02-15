@@ -16,7 +16,9 @@ Validating the output of a command
 ----------------------------------
 
 All different types of command validations are available by using the function
-:func:`~groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern.CmdValidatorsPlugin.validate`::
+:func:`~groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern.CmdValidatorsPlugin.validate`:
+
+.. code-block:: python
 
       import sys
       from groundwork_validation.patterns import GwCmdValidatorsPattern
@@ -51,20 +53,29 @@ Validating the return code
 By validating the return code, you can easily check if the command is available and exits like expected.
 If the return code is not allowed, the exception
 :class:`~groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern.NotAllowedReturnCode`
-is raised::
+is raised:
+
+.. code-block:: python
 
     import sys
+    from groundwork_validation.patterns import GwCmdValidatorsPattern
     from groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern import NotAllowedReturnCode
 
-    try:
-        if self.validators.cmd.validate("dir", search="my_folder", allowed_return_codes=[0, 1]):
-            print("Command 'dir' works a expected.")
-        else:
-            print("Command 'dir' seems not to work correctly. We stop here")
-            sys.exit(1)
-    except NotAllowedReturnCode:
-        print("Command exists with not allowed status code. Validation failed!")
-        sys.exit(1)
+     class My_Plugin(GwCmdValidatorsPattern):
+            def __init__(self, app, **kwargs):
+                self.name = "My_Plugin"
+                super(My_Plugin, self).__init__(app, **kwargs)
+
+            def activate(self):
+                try:
+                    if self.validators.cmd.validate("dir", search="my_folder", allowed_return_codes=[0, 1]):
+                        print("Command 'dir' works a expected.")
+                    else:
+                        print("Command 'dir' seems not to work correctly. We stop here")
+                        sys.exit(1)
+                except NotAllowedReturnCode:
+                    print("Command exists with not allowed status code. Validation failed!")
+                    sys.exit(1)
 
 
 
@@ -77,16 +88,28 @@ By default the command is killed after a timeout of 2 seconds and
 is raised. You are free to set your own timeout for each validation::
 
     import sys
+    from groundwork_validation.patterns import GwCmdValidatorsPattern
     from groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern \
         import NotAllowedReturnCode, CommandTimeoutExpired
 
-    try:
-        if self.validators.cmd.validate("dir", search="my_folder", timeout=5):
-            print("Command 'dir' works a expected.")
-        else:
-            print("Command 'dir' seems not to work correctly. We stop here")
-            sys.exit(1)
-    except CommandTimeoutExpired:
-        print("Command has not finished and raised a timeout. This is not expected. We stop here!")
-        sys.exit(1)
+    class My_Plugin(GwCmdValidatorsPattern):
+            def __init__(self, app, **kwargs):
+                self.name = "My_Plugin"
+                super(My_Plugin, self).__init__(app, **kwargs)
+
+            def activate(self):
+                try:
+                    if self.validators.cmd.validate("dir", search="my_folder", timeout=5):
+                        print("Command 'dir' works a expected.")
+                    else:
+                        print("Command 'dir' seems not to work correctly. We stop here")
+                        sys.exit(1)
+                except CommandTimeoutExpired:
+                    print("Command has not finished and raised a timeout. This is not expected. We stop here!")
+                    sys.exit(1)
+
+
+test::
+
+    pip install
 

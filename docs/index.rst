@@ -84,14 +84,17 @@ Installation
 ------------
 Via pip
 ~~~~~~~
-To install ``groundwork-validation`` simply use ``pip``::
+To install ``groundwork-validation`` simply use ``pip``:
 
-   pip install groundwork-validation
+.. code-block:: python
 
+    pip install groundwork-validation
 
 From sources
 ~~~~~~~~~~~~
-Using git and pip::
+Using git and pip:
+
+.. code-block:: python
 
     git clone https://github.com/useblocks/groundwork-validation
     cd groundwork-validation
