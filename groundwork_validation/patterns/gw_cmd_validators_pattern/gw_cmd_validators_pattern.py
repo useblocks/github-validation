@@ -1,10 +1,30 @@
-from subprocess import check_output, CalledProcessError, STDOUT
+from subprocess import check_output, CalledProcessError, STDOUT, TimeoutExpired
 from re import finditer
 
 from groundwork_validation.patterns import GwValidatorsPattern
 
 
 class GwCmdValidatorsPattern(GwValidatorsPattern):
+    """
+    Allows the validation of output, return code and execution time of a given command.
+
+    Usage::
+
+        class My_Plugin(GwCmdValidatorsPattern):
+            def __init__(self, app, **kwargs):
+                self.name = "My_Plugin"
+                super(My_Plugin, self).__init__(app, **kwargs)
+
+            def activate(self):
+                if self.validators.cmd.validate("dir", search="my_folder"):
+                    print("Command 'dir' works a expected.")
+                else:
+                    print("Command 'dir' seems not to work correctly. We stop here")
+                    sys.exit(1)
+
+            def deactivate(self):
+                pass
+    """
 
     def __init__(self, app, **kwargs):
         super(GwCmdValidatorsPattern, self).__init__(app, **kwargs)
@@ -18,6 +38,22 @@ class CmdValidatorsPlugin:
         self.plugin = plugin
 
     def validate(self, command, search=None, regex=None, timeout=2, allowed_return_codes=None, decode="utf-8"):
+        """
+        Validates the output of a given command.
+
+        The validation can be based on a simple string search or on a complex regular expression.
+        Also the return_code can be validated. As well as the execution duration by setting a timeout.
+
+        :param command: string, which is used as command for a new subprocess. E.g. 'git -v'.
+        :param search: string, which shall be contained in the output of the command. Default is None
+        :param regex:  regular expression, which is tested against the command output.
+                       Default is None
+        :param timeout: Time ins seconds, after which the execution is stopped and the validation fails.
+                        Default is 2 seconds
+        :param allowed_return_codes: List of allowed return values. Default is []
+        :param decode: Format of the console encoding, which shall be used. Default is 'utf-8'
+        :return: True, if validation succeeded. Else False.
+        """
         if search is None and regex is None:
             raise ValueError("Parameter search or regex must be set.")
         if search is not None and regex is not None:
@@ -36,6 +72,8 @@ class CmdValidatorsPlugin:
         except CalledProcessError as e:
             output = e.output
             return_code = e.returncode
+        except TimeoutExpired as e:
+            raise CommandTimeoutExpired(e)
 
         if len(allowed_return_codes) > 0 and return_code not in allowed_return_codes:
             raise NotAllowedReturnCode("For command %s got return code '%s', which is not in %s"
@@ -56,4 +94,8 @@ class CmdValidatorsPlugin:
 
 
 class NotAllowedReturnCode(BaseException):
+    pass
+
+
+class CommandTimeoutExpired(BaseException):
     pass

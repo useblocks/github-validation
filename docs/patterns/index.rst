@@ -5,3 +5,5 @@ Patterns
 
    gwvalidatorspattern
    gwdbvalidatorspattern
+   gwfilevalidatorspattern
+   gwcmdvalidatorspattern

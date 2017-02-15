@@ -66,3 +66,43 @@ GwDbValidatorsPattern
 .. autoclass:: ValidationError
    :members:
    :undoc-members:
+
+
+GwFileValidatorsPattern
+~~~~~~~~~~~~~~~~~~~~~~~
+.. automodule::  groundwork_validation.patterns.gw_file_validators_pattern.gw_file_validators_pattern
+
+.. currentmodule:: groundwork_validation.patterns.gw_file_validators_pattern.gw_file_validators_pattern
+
+.. autoclass:: GwFileValidatorsPattern
+   :members:
+   :inherited-members:
+   :undoc-members:
+
+.. autoclass:: FileValidatorsPlugin
+   :members:
+   :undoc-members:
+
+
+GwCmdValidatorsPattern
+~~~~~~~~~~~~~~~~~~~~~~~
+.. automodule::  groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern
+
+.. currentmodule:: groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern
+
+.. autoclass:: GwCmdValidatorsPattern
+   :members:
+   :inherited-members:
+   :undoc-members:
+
+.. autoclass:: CmdValidatorsPlugin
+   :members:
+   :undoc-members:
+
+.. autoclass:: NotAllowedReturnCode
+   :members:
+   :undoc-members:
+
+.. autoclass:: CommandTimeoutExpired
+   :members:
+   :undoc-members:

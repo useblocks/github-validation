@@ -134,18 +134,23 @@ class Validator:
             return True
         return False
 
-    def hash(self, data, return_hash_object=False, strict=False):
+    def hash(self, data, hash_object=None, return_hash_object=False, strict=False):
         """
         Generates a hash of a given Python object.
 
         :param data: Python object
         :param return_hash_object: If true, the complete hashlib object is returned
                                    instead of a hexdigest representation as string.
+        :param hash_object: An existing  hash object, which will be updated. Instead of creating a new one.
         :param strict: If True, all configured attributes **must** exist in the given data, otherwise an exception
                        is thrown.
         :return: hash as string
         """
-        current_hash = self.algorithm()
+        if hash_object is None:
+            current_hash = self.get_hash_object()
+        else:
+            current_hash = hash_object
+
         if self.attributes is None:
             current_hash.update(pickle.dumps(data))
         else:
@@ -157,3 +162,11 @@ class Validator:
         if return_hash_object:
             return current_hash
         return current_hash.hexdigest()
+
+    def get_hash_object(self):
+        """
+        Returns a hash object, which can be used as input for validate functions.
+
+        :return: An unused hash object
+        """
+        return self.algorithm()

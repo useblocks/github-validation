@@ -47,6 +47,9 @@ This package contains the following groundwork extensions:
 * :ref:`gwvalidators` - Provides functions to hash and validate python objects.
 * :ref:`gwdbvalidators` - Allows the registration of database model classes to validate retrieved data on each
   request.
+* :ref:`gwfilevalidators` - Creates and validates hashes for given files.
+* :ref:`gwcmdvalidators` - Validates output and return code of given command (E.g. to validate an installed version
+  of a tool)
 
 
 Why validation is needed

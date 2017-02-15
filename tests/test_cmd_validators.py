@@ -1,9 +1,9 @@
 import os
 import pytest
-import subprocess
 import groundwork
 from groundwork_validation.patterns import GwCmdValidatorsPattern
-from groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern import NotAllowedReturnCode
+from groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern \
+    import NotAllowedReturnCode, CommandTimeoutExpired
 
 
 def test_cmd_validator_init():
@@ -159,12 +159,12 @@ def test_cmd_validator_timeout():
     plugin.activate()
 
     plugin.validators.cmd.validate(_sleep(1), search="")
-    with pytest.raises(subprocess.TimeoutExpired):
+    with pytest.raises(CommandTimeoutExpired):
         plugin.validators.cmd.validate(_sleep(3), search="")
 
     plugin.validators.cmd.validate(_sleep(1), search="", timeout=1.5)
-    with pytest.raises(subprocess.TimeoutExpired):
-        plugin.validators.cmd.validate(_sleep(1),  search="", timeout=0.5)
+    with pytest.raises(CommandTimeoutExpired):
+        plugin.validators.cmd.validate(_sleep(1), search="", timeout=0.5)
 
 
 def _sleep(seconds):
