@@ -17,7 +17,7 @@ class CmdValidatorsPlugin:
     def __init__(self, plugin):
         self.plugin = plugin
 
-    def validate(self, command, search=None, regex=None, timeout=2, allowed_return_codes=None):
+    def validate(self, command, search=None, regex=None, timeout=2, allowed_return_codes=None, decode="utf-8"):
         if search is None and regex is None:
             raise ValueError("Parameter search or regex must be set.")
         if search is not None and regex is not None:
@@ -43,7 +43,7 @@ class CmdValidatorsPlugin:
 
         self.plugin.log.debug("Executed '%s' with return code: %s" % (command, return_code))
 
-        output = output.decode("utf-8")
+        output = output.decode(decode)
         found = False
         if search is not None:
             if search in output:
