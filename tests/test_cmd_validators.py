@@ -162,7 +162,7 @@ def test_cmd_validator_timeout():
     with pytest.raises(CommandTimeoutExpired):
         plugin.validators.cmd.validate(_sleep(3), search="")
 
-    plugin.validators.cmd.validate(_sleep(1), search="", timeout=1.5)
+    plugin.validators.cmd.validate(_sleep(1), search="", timeout=2)
     with pytest.raises(CommandTimeoutExpired):
         plugin.validators.cmd.validate(_sleep(1), search="", timeout=0.5)
 

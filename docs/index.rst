@@ -18,6 +18,8 @@
    :target: https://pypi.python.org/pypi/groundwork-validation
    :alt: PyPI Package latest release
 
+.. highlight:: python
+
 Welcome to groundwork validation
 ================================
 
