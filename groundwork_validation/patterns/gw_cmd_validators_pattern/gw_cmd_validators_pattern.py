@@ -1,7 +1,14 @@
-from subprocess import check_output, CalledProcessError, STDOUT, TimeoutExpired
+import sys
 from re import finditer
 
 from groundwork_validation.patterns import GwValidatorsPattern
+
+# This uses a backport of subrprocess for python < 3
+# This is needed to use the timeout functionality.
+if sys.version_info[0] < 3:
+    import subprocess32 as subprocess
+else:
+    import subprocess
 
 
 class GwCmdValidatorsPattern(GwValidatorsPattern):
@@ -67,12 +74,12 @@ class CmdValidatorsPlugin:
             raise TypeError("allowed_return_code must be a list of integers")
 
         try:
-            output = check_output(command, stderr=STDOUT, shell=True, timeout=timeout)
+            output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True, timeout=timeout)
             return_code = 0
-        except CalledProcessError as e:
+        except subprocess.CalledProcessError as e:
             output = e.output
             return_code = e.returncode
-        except TimeoutExpired as e:
+        except subprocess.TimeoutExpired as e:
             raise CommandTimeoutExpired(e)
 
         if len(allowed_return_codes) > 0 and return_code not in allowed_return_codes:
