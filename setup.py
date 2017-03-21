@@ -2,6 +2,7 @@
 groundwork-validation
 =====================
 """
+import sys
 from setuptools import setup, find_packages
 import re
 import ast
@@ -10,6 +11,10 @@ _version_re = re.compile(r'__version__\s+=\s+(.*)')
 with open('groundwork_validation/version.py', 'rb') as f:
     version = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
+
+install_requires = ['groundwork-web', 'psutil', 'groundwork-database', 'groundwork']
+if sys.version_info <= (2, 7):
+    install_requires.append('subprocess32')
 
 setup(
     name='groundwork_validation',
@@ -24,8 +29,7 @@ setup(
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     include_package_data=True,
     platforms='any',
-    install_requires=['groundwork-web', 'psutil', 'groundwork-database', 'groundwork',
-                      'subprocess32;python_version<"3.1"'],
+    install_requires=install_requires,
     tests_require=['pytest', 'pytest-flake8'],
     classifiers=[
         'Development Status :: 3 - Alpha',
