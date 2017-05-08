@@ -65,3 +65,104 @@ To validate an object, all you need is the hash and the function
 .. note::
    The plugin developer is responsible for safely storing hashes (e.g. inside a database).
 
+Requirements & Specifications
+-----------------------------
+
+The following sections describes the implemented requirements and their related specifications.
+
+**Available requirements**
+
+.. needfilter::
+   :tags: gwvalidator
+   :types: req
+   :layout: table
+
+**Available specifications**
+
+.. needfilter::
+   :tags: gwvalidator
+   :types: spec
+   :layout: table
+
+Requirements
+~~~~~~~~~~~~
+
+.. req:: Validator registration
+   :tags: gwvalidator
+
+   As developer I want to register my own specific validator to be able so speccify:
+
+   * name
+   * description
+   * hash algorithm
+   * whitelist for hashable attributes
+
+.. req:: Getting a validator
+   :tags: gwvalidator
+
+   As developer I want to get a validator object to use it for handling validations tasks on selected
+   objects.
+
+.. req:: Validator functions
+   :tags: gwvalidator
+
+   As developer I want my validators to provide the following functions to me:
+
+   * Creating of hashes
+   * Validating of hashes
+
+Specification
+~~~~~~~~~~~~~
+
+.. spec:: register() function for self.validators
+   :tags: gwvalidator
+   :links: R_D8C4B; R_6A8AF
+
+   A function ``self.validators.register`` must be implemented, to allow the registration and requesting of validators.
+
+   The register function will have the following parameters:
+
+   * name
+   * description
+   * algorithm - default is hashlib.sha256
+   * whitelist - default is []
+
+   The returned object must be a instance of the class
+   :class:`~groundwork_validation.patterns.gw_validators_pattern.gw_validators_pattern.Validator`.
+
+.. spec:: hash() function for validator
+   :tags: gwvalidator
+   :links: R_E3793;
+
+   An instance of the class
+   :class:`~groundwork_validation.patterns.gw_validators_pattern.gw_validators_pattern.Validator`
+   has a hash() function, which has the following parameters:
+
+   * data
+   * return_hash_object
+   * hash_object
+   * strict
+
+   Where **data** is the object to hash.
+
+   **hash_object** can be used to provide an hash object, which gets updated instead of creating a new one.
+
+   If **strict** is True, all configured attirbutes from the whitelist must exist inside the given data.
+
+   If **return_hah_object** is True, the hash object, which is used by hashlib will be returned.
+   Otherwise a hexdigest string representation.
+
+.. spec:: validate() function for validator
+   :tags: gwvalidator
+   :links: R_E3793;
+
+   An instance of the class
+   :class:`~groundwork_validation.patterns.gw_validators_pattern.gw_validators_pattern.Validator`
+   has a validate() function, which has the following parameters:
+
+   * data
+   * hash_string
+
+   The **data** is hashed and the calculated hash values is compared against the given **hash_string**.
+   If they are equal, True must be returned. Otherwise False.
+

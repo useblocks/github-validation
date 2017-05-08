@@ -1,9 +1,15 @@
 import pytest
+import sys
 import groundwork
 from groundwork_validation.patterns import GwFileValidatorsPattern
 
 
 def test_file_validator_init():
+    """
+    .. test:: GwFileValidator Init test
+       :tags: gwfilevalidators
+
+    """
     class My_Plugin(GwFileValidatorsPattern):
         def __init__(self, app, **kwargs):
             self.name = "My_Plugin"
@@ -21,6 +27,12 @@ def test_file_validator_init():
 
 
 def test_file_validator_hash(tmpdir):
+    """
+    .. test:: GwFileValidator hash test
+       :tags: gwfilevalidators
+       :links: S_31C31; S_CFBC1
+
+    """
     test_file_1 = tmpdir.mkdir("sub_1").join("test_1.txt")
     test_file_1.write("content")
 
@@ -66,6 +78,11 @@ def test_file_validator_hash(tmpdir):
 
 
 def test_file_validator_validate(tmpdir):
+    """
+    .. test:: GwFileValidator Validate test
+       :tags: gwfilevalidators
+       :links: S_31C31; S_CFBC1
+    """
     test_file_1 = tmpdir.mkdir("sub_1").join("test_1.txt")
     test_file_1.write("content")
 
@@ -101,6 +118,11 @@ def test_file_validator_validate(tmpdir):
 
 
 def test_file_validator_validate_errors(tmpdir):
+    """
+    .. test:: GwFileValidator Error tests
+       :tags: gwfilevalidators
+
+    """
     test_file_1 = tmpdir.mkdir("sub_1").join("test_1.txt")
     test_file_1.write("content")
 
@@ -125,5 +147,9 @@ def test_file_validator_validate_errors(tmpdir):
     with pytest.raises(ValueError):
         plugin.validators.file.validate(test_file_1.strpath, "No", "NoFilePath")
 
-    with pytest.raises(FileNotFoundError):
-        plugin.validators.file.validate(test_file_1.strpath, hash_file="NoFilePath")
+    if sys.version_info.major < 3:
+        with pytest.raises(IOError):
+            plugin.validators.file.validate(test_file_1.strpath, hash_file="NoFilePath")
+    else:
+        with pytest.raises(FileNotFoundError):
+            plugin.validators.file.validate(test_file_1.strpath, hash_file="NoFilePath")

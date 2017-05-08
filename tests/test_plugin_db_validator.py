@@ -8,13 +8,29 @@ from groundwork_validation.patterns.gw_db_validators_pattern.gw_db_validators_pa
 
 
 def test_plugin_init():
+    """
+    .. test:: Plugin initialisation
+       :id: T_001
+       :tags: gwdbvalidator_plugin;
+       :links: S_001
 
+       Tests the initialisation of :ref:`gwdbvalidator` and the inheritance and correct initialisation of
+       :ref:`gwdbvalidators`.
+    """
     app = groundwork.App()
     validator_plugin = GwDbValidator(app)
     validator_plugin.activate()
 
 
 def test_validation():
+    """
+    .. test:: Hashing and validation of database actions
+       :id: T_002
+       :tags: gwdbvalidator_plugin;
+       :links: S_002
+
+       Tests the hashing and validation of existing and newly created database tables.
+    """
 
     app = groundwork.App()
     validator_plugin = GwDbValidator(app)

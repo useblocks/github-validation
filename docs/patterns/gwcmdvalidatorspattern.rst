@@ -113,3 +113,81 @@ test::
 
     pip install
 
+Requirements & Specifications
+-----------------------------
+
+The following sections describes the implemented requirements and their related specifications.
+
+**Available requirements**
+
+.. needfilter::
+   :tags: gwcmdvalidators
+   :types: req
+   :layout: table
+
+**Available specifications**
+
+.. needfilter::
+   :tags: gwcmdvalidators
+   :types: spec
+   :layout: table
+
+Requirements
+~~~~~~~~~~~~
+
+.. req:: Command output validation
+   :tags: gwcmdvalidators
+
+   As developer I want to be able to validate the correct output of an executed command.
+
+.. req:: Command exit code validation
+   :tags: gwcmdvalidators
+
+   As developer I want to be able to validate the correct exit code of an executed command
+
+.. req:: Command runtime validation
+   :tags: gwcmdvalidators
+
+   As developer I want to be able to validate the maximum needed run time of an executed command
+
+Specifications
+~~~~~~~~~~~~~~
+
+.. spec:: Command execution
+   :tags: gwcmdvalidators
+   :links: R_79027;R_72AC6;R_77A07
+
+   With `self.validators.cmd.validate` the developer is able to execute a command on command line.
+   This execution takes place in a subprocess, but the application must wait till it ends.
+
+   The first argument must be the command to execute
+
+.. spec:: command output check
+   :tags: gwcmdvalidators
+   :links: R_79027
+
+   As keyword argument "search" of `self.validators.cmd.validate` the output on STDOUT is checked, if the
+   given string is part of it.
+
+   If yes, True is returned. Otherwise False
+
+.. spec:: command exit code check
+   :tags: gwcmdvalidators
+   :links: R_72AC6
+
+   As keyword argument "allowed_return_codes" of `self.validators.cmd.validate` as list of allowed return
+   codes can be defined.
+
+   If the retrieved return code is not in this list, the Error
+   :class:`~groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern.NotAllowedReturnCode`
+   is raised.
+
+.. spec:: command timeout check
+   :tags: gwcmdvalidators
+   :links: R_77A07
+
+   As keyword argument "timeout" of `self.validators.cmd.validate` a time in seconds can be set.
+
+   If the execution of the given command takes longer as specified, the execution is aborted and the error
+   :class:`~groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_pattern.CommandTimeoutExpired`
+   is raised.

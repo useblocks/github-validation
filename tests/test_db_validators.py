@@ -7,6 +7,14 @@ from groundwork_validation.patterns.gw_db_validators_pattern.gw_db_validators_pa
 
 
 def test_db_validator_init():
+    """
+        .. test:: GbDbValidation initialisation and validation tests
+           :tags: gwdbvalidator_pattern;
+           :links: S_5917A
+
+           Tests the initialisation of :ref:`gwdbvalidators` and performs some IO actions on a for validation
+           activated database table.
+        """
 
     class My_Plugin(GwDbValidatorsPattern):
         def __init__(self, app, **kwargs):

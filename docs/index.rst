@@ -109,7 +109,9 @@ Content
 
    plugins/index
    patterns/index
+   traceability
    api
+   tests
 
 
 

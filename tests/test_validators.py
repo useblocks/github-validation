@@ -3,6 +3,17 @@ from groundwork_validation.patterns import GwValidatorsPattern
 
 
 def test_validator_init():
+    """
+    .. test:: gwvalidator tests
+       :tags: gwvalidator
+       :links: S_1FB7D;S_10710
+
+       Test of initialisation, hashing and validation of
+       :class:`~groundwork_validation.patterns.gw_validators_pattern.gw_validators_pattern.GwValidatorsPattern`
+
+
+
+    """
 
     class My_Plugin(GwValidatorsPattern):
         def __init__(self, app, **kwargs):

@@ -105,6 +105,8 @@ executing SQL statements directly::
             # Reloads the data from db and will throw an exception
             self.db.session.refresh(my_test)
 
+.. _gwdbvalidator_config:
+
 Configuration
 -------------
 
@@ -166,6 +168,46 @@ If the validation fails, the exception
 gets raised. If this happens, the plugin developer is responsible to handle this exception the correct way.
 
 
+Requirements & Specifications
+-----------------------------
 
+The following sections describes the implemented requirements and their related specifications.
+
+**Available requirements**
+
+.. needfilter::
+   :tags: gwdbvalidator_pattern
+   :types: req
+   :layout: table
+
+**Available specifications**
+
+.. needfilter::
+   :tags: gwdbvalidator_pattern
+   :types: spec
+   :layout: table
+
+Requirements
+~~~~~~~~~~~~
+
+.. req:: Validation per database table
+   :tags: gwdbvalidator_pattern
+
+   As developer I want to be able to to activate the validation of single database table so that
+   I'm sure retrieved data is valid.
+
+Specification
+~~~~~~~~~~~~~
+
+.. spec:: DB Validation registration
+   :tags: gwdbvalidator_pattern
+   :links: R_7F7C2;
+
+   A function ``self.validators.db.register`` must be implemented, to allow the registration of database classes
+   for validation. The following parameters must be available:
+
+   * name of the registered db validator.
+   * description of the registered db validator.
+   * database class (sqlalchemy), which write/read operations shall be validated.
 
 

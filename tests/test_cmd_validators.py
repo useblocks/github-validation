@@ -7,6 +7,10 @@ from groundwork_validation.patterns.gw_cmd_validators_pattern.gw_cmd_validators_
 
 
 def test_cmd_validator_init():
+    """
+    .. test:: GwCmdValidators Init test
+       :tags: gwcmdvalidators
+    """
     class My_Plugin(GwCmdValidatorsPattern):
         def __init__(self, app, **kwargs):
             self.name = "My_Plugin"
@@ -24,6 +28,11 @@ def test_cmd_validator_init():
 
 
 def test_cmd_validator_search(tmpdir):
+    """
+    .. test:: GwCmdValidators search test
+       :tags: gwcmdvalidators
+       :links: S_102F8
+    """
     # Creating temporay folder with sub_folders
     tmpdir.mkdir("sub_a")
     tmpdir.mkdir("sub_b")
@@ -56,6 +65,10 @@ def test_cmd_validator_search(tmpdir):
 
 
 def test_cmd_validator_regex(tmpdir):
+    """
+    .. test:: GwCmdValidators search regex test
+       :tags: gwcmdvalidators
+    """
 
     # Creating temporay folder with sub_folders
     tmpdir.mkdir("sub_a")
@@ -89,6 +102,11 @@ def test_cmd_validator_regex(tmpdir):
 
 
 def test_cmd_validator_return_codes():
+    """
+    .. test:: GwCmdValidators return code test
+       :tags: gwcmdvalidators
+       :links: S_EB190
+    """
     class My_Plugin(GwCmdValidatorsPattern):
         def __init__(self, app, **kwargs):
             self.name = "My_Plugin"
@@ -117,6 +135,10 @@ def test_cmd_validator_return_codes():
 
 
 def test_cmd_validator_errors():
+    """
+        .. test:: GwCmdValidators errors test
+           :tags: gwcmdvalidators
+    """
     class My_Plugin(GwCmdValidatorsPattern):
         def __init__(self, app, **kwargs):
             self.name = "My_Plugin"
@@ -143,6 +165,11 @@ def test_cmd_validator_errors():
 
 
 def test_cmd_validator_timeout():
+    """
+    .. test:: GwCmdValidators timeout test
+       :tags: gwcmdvalidators
+       :links: S_8C1D8
+    """
     class My_Plugin(GwCmdValidatorsPattern):
         def __init__(self, app, **kwargs):
             self.name = "My_Plugin"
