@@ -12,7 +12,7 @@ with open('groundwork_validation/version.py', 'rb') as f:
     version = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
 
-install_requires = ['groundwork-web', 'psutil', 'groundwork-database', 'groundwork']
+install_requires = ['groundwork-database', 'groundwork']
 if sys.version_info <= (2, 7):
     install_requires.append('subprocess32')
 
